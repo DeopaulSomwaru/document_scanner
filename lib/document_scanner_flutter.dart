@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 
 import 'configs/configs.dart';
 
-/// Dcoument Scanner Class
+/// Document Scanner Class
 class DocumentScannerFlutter {
   static MethodChannel get _channel =>
       const MethodChannel('document_scanner_flutter');
@@ -17,11 +17,11 @@ class DocumentScannerFlutter {
       ScannerFileSource source, Map<dynamic, String> androidConfigs) async {
     Map<String, String?> finalAndroidArgs = {};
     for (var entry in androidConfigs.entries) {
-      finalAndroidArgs[describeEnum(entry.key)] = entry.value;
+      finalAndroidArgs[entry.key.name] = entry.value;
     }
 
     String? path = await _channel.invokeMethod(
-        describeEnum(source).toLowerCase(), finalAndroidArgs);
+        source.name.toLowerCase(), finalAndroidArgs);
     if (path == null) {
       return null;
     } else {
@@ -65,11 +65,11 @@ class DocumentScannerFlutter {
         isDismissible: false,
         builder: (BuildContext bc) {
           return Container(
-            child: new Wrap(
+            child: Wrap(
               children: <Widget>[
-                new ListTile(
-                    leading: new Icon(Icons.camera_alt),
-                    title: new Text(
+                ListTile(
+                    leading: const Icon(Icons.camera_alt),
+                    title: Text(
                         labelsConfig[ScannerLabelsConfig.PICKER_CAMERA_LABEL] ??
                             'Camera'),
                     onTap: () async {
@@ -78,9 +78,9 @@ class DocumentScannerFlutter {
                           await _scanDocument(
                               ScannerFileSource.CAMERA, labelsConfig));
                     }),
-                new ListTile(
-                  leading: new Icon(Icons.image_search),
-                  title: new Text(
+                ListTile(
+                  leading: const Icon(Icons.image_search),
+                  title: Text(
                       labelsConfig[ScannerLabelsConfig.PICKER_GALLERY_LABEL] ??
                           'Photo Library'),
                   onTap: () async {
